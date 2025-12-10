@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dept Function</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <style>
+        /* Base and Theme Changes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; 
+            padding: 20px 10px; 
+            background-color: #fcf8e3; /* Cream Theme */
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; 
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px; 
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        /* Base Cell Styles */
+        th, td {
+            border: 1px solid #000;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 14px;
+            vertical-align: top;
+            white-space: normal; 
+        }
+
+        /* Header Styling */
+        .main-header {
+            background-color: #f5cba7; 
+            color: #4a4a4a; 
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .subheader th {
+            background-color: #ffe0b2; 
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Alignment and Column Widths for readability */
+        .s-no {
+            width: 5%;
+            text-align: center;
+        }
+
+        .role {
+            width: 15%;
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        .units {
+            width: 5%;
+            text-align: center;
+        }
+
+        /* R&R Link Styling */
+        .rr-link {
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Footer (Totals) Styling */
+        .total-row td {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+
+        .total-label {
+            text-align: right;
+            padding-right: 20px;
+            background-color: #fff9c4; 
+        }
+
+        .total-figure {
+            text-align: center;
+        }
+
+        .total-employee .total-label {
+            background-color: #f4d03f; 
+        }
+
+        .total-employee .total-figure {
+            background-color: #ff9800; 
+            color: white;
+        }
+
+        .total-gap .total-label {
+            background-color: #f0f4c3;
+        }
+
+        .total-gap .total-figure {
+            background-color: #cddc39; 
+        }
+
+        /* Style for cells containing multiple lines of names */
+        td:nth-child(5) { 
+            line-height: 1.4;
+        }
+
+        /* --- PDF Viewer Modal Styles --- */
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: 1% auto;
+            padding: 20px;
+            width: 98%;
+            height: 98%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background-color: #fff;
+            position: relative;
+        }
+
+        .close-btn {
+            color: #fff; 
+            font-size: 40px;
+            font-weight: bold;
+            position: absolute;
+            top: 0px;
+            right: 15px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #ff0000;
+        }
+
+        #pdfFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- Toast Notification Styles (Simple) --- */
+        #toast {
+            visibility: hidden; 
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000; /* Higher than modal */
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="9" class="main-header">SALES DEPT FUNCTION</th>
+                </tr>
+                <tr class="subheader">
+                    <th class="s-no">S.NO</th>
+                    <th class="role">ROLE</th>
+                    <th>JOB DESCRIPTION</th>
+                    <th>R&R</th>
+                    <th>RESPONSIBLE PERSON</th>
+                    <th class="units">U1</th>
+                    <th class="units">U2</th>
+                    <th class="units">U3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="s-no">1</td>
+                    <td class="role">HOD</td>
+                    <td></td>
+                    <td><a href="./HOD/HOD.pdf" class="rr-link" title="Click to view R&R PDF for HOD" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>R.Prabhakaran(U1)</td>
+                    <td>1</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="s-no" rowspan="3">2</td>
+                    <td class="role" rowspan="3">Planner</td>
+                    <td>1.TVS Groups</td>
+                    <td><a href="./PLANNER/PLANNER.pdf" class="rr-link" title="Click to view R&R PDF for Planner" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>A.Jannathul Firdhous(U1)</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>2.LKM Mysore & GEMPL</td>
+                    <td><a href="./PLANNER/PLANNER.pdf" class="rr-link" title="Click to view R&R PDF for Planner" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>R.Sivakumar(U2)</td>
+                    <td>2</td>
+                    <td>-</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>3.GEMPL & Quantum</td>
+                    <td><a href="./PLANNER/PLANNER.pdf" class="rr-link" title="Click to view R&R PDF for Planner" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>R.Nagaraj(U3)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="s-no">3</td>
+                    <td class="role">Dispatch Incharge</td>
+                    <td></td>
+                    <td><a href="./DISPATCH%20INCHARGE/DISPATCH%20INCHARGE.pdf" class="rr-link" title="Click to view R&R PDF for Dispatch Incharge" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>M.Baskar(U1)<br>N.Shanmugam(U1)<br>R.Manimadhu(U2)<br>R.Madheshwaran(U2)<br>N.Puviyarasu(U3)</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td class="s-no">4</td>
+                    <td class="role">Loading / Unloading Incharge (U1 & KNL)</td>
+                    <td></td>
+                    <td><a href="./Loading%20Unloading/Loading%20Unloading.pdf" class="rr-link" title="Click to view R&R PDF for Loading/Unloading" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>R.Thamotharan(U1)<br>T.Vignesh(U1)</td>
+                    <td>2</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="s-no">5</td>
+                    <td class="role">Store/ Packing & counting Incharge</td>
+                    <td></td>
+                    <td><a href="./Store%20packing/Store%20packing.pdf" class="rr-link" title="Click to view R&R PDF for Store/Packing Incharge" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>T.Shanmugam(U1)</td>
+                    <td>1</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="s-no">6</td>
+                    <td class="role">Store maintenance (Inward & outward) & Stock taking Activity shift supervisor</td>
+                    <td></td>
+                    <td><a href="./Store%20maintain/Store%20maintain.pdf" class="rr-link" title="Click to view R&R PDF for Store Maintenance" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>T.Ravishankar(U1)<br>T.Sivasakthivel(U1)<br>Manju<br>O.Muniraju(U2)</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="s-no">7</td>
+                    <td class="role">Invoicing</td>
+                    <td>Day wise JIT call pending updation</td>
+                    <td><a href="./INVOICING/INVOICING.pdf" class="rr-link" title="Click to view R&R PDF for Invoicing" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td>M.Giridharan(U1)<br>S.R.Manikandan(U1)</td>
+                    <td>2</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="s-no" rowspan="7">8</td>
+                    <td class="role" rowspan="7">Documentation</td>
+                    <td>1. Sales KPI & PPT / Data Analysis</td>
+                    <td rowspan="7"><a href="./Documentation/Documentation.pdf" class="rr-link" title="Click to view R&R PDF for Documentation" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td rowspan="3">N.Poovizhi(U1)<br>R.Ravichandran(U1)</td>
+                    <td rowspan="3">3</td>
+                    <td rowspan="3">-</td>
+                    <td rowspan="3">-</td>
+                </tr>
+                <tr>
+                    <td>2.Dept Improvement Activity</td>
+                </tr>
+                <tr>
+                    <td>3.Office Maintenance</td>
+                </tr>
+                <tr>
+                    <td>4.Customer GRN / Payment Follow-up</td>
+                    <td rowspan="4">K.Ramyashree (U1)</td>
+                    <td rowspan="4"></td>
+                    <td rowspan="4"></td>
+                    <td rowspan="4"></td>
+                </tr>
+                <tr>
+                    <td>5.Internal MIS / Manpower Follow-up</td>
+                </tr>
+                <tr>
+                    <td>6.Barcode TSC Software Generation</td>
+                </tr>
+                <tr>
+                    <td>7.Customer Rejection /Complaint Follow-up</td>
+                </tr>
+                <tr>
+                    <td class="s-no" rowspan="3">9</td>
+                    <td class="role" rowspan="3">AL Group Dispatch</td>
+                    <td>1.Dispatch Incharge</td>
+                    <td rowspan="3"><a href="./AL%20Dispatch/AL%20Dispatch.pdf" class="rr-link" title="Click to view R&R PDF for AL Dispatch" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td rowspan="3">R.Umamageshwari (U1)</td>
+                    <td rowspan="3">2</td>
+                    <td rowspan="3">-</td>
+                    <td rowspan="3">-</td>
+                </tr>
+                <tr>
+                    <td>2.Invoicing & Document Follow-up</td>
+                </tr>
+                <tr>
+                    <td>FED/NPD Dispatch Follow-up</td>
+                </tr>
+                <tr>
+                    <td class="s-no" rowspan="3">10</td>
+                    <td class="role" rowspan="3">FED/NPD Dispatch Follow-up</td>
+                    <td>1.FED/ Troax Dispatch Planning</td>
+                    <td rowspan="3"><a href="./FED%20NPD%20DISPATCH/FED%20NPD%20DISPATCH.pdf" class="rr-link" title="Click to view R&R PDF for FED/NPD Dispatch" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td rowspan="3">K.Manoj Kumar(U1)</td>
+                    <td rowspan="3">1</td>
+                    <td rowspan="3">-</td>
+                    <td rowspan="3">-</td>
+                </tr>
+                <tr>
+                    <td>2.Preparation of All customer Packing standard</td>
+                </tr>
+                <tr>
+                    <td>2.All customer Trolley Design & Manufacturing</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="5" class="total-label">Total No of Employee Unit wise</td>
+                    <td class="total-figure">18</td>
+                    <td class="total-figure">3</td>
+                    <td class="total-figure">2</td>
+                </tr>
+                <tr class="total-row total-employee">
+                    <td colspan="5" class="total-label">Total No of Employee in Dept</td>
+                    <td colspan="3" class="total-figure">23</td>
+                </tr>
+                <tr class="total-row total-gap">
+                    <td colspan="5" class="total-label">Gap in Dept</td>
+                    <td colspan="3" class="total-figure">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePDFViewer()">&times;</span>
+            <iframe id="pdfFrame" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // Helper function to display the toast message
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            
+            // Hide the toast after 3 seconds
+            setTimeout(function(){ 
+                toast.classList.remove("show"); 
+            }, 3000);
+        }
+
+        // Function to open the PDF viewer modal
+        function openPDFViewer(event) {
+            event.preventDefault();
+
+            // Find the role name to use in the toast
+            const row = event.currentTarget.closest('tr');
+            const roleElement = row.querySelector('.role');
+            const roleName = roleElement ? roleElement.textContent.trim() : 'Document';
+            
+            const pdfPath = event.currentTarget.getAttribute('href');
+            const modal = document.getElementById('pdfModal');
+            const iframe = document.getElementById('pdfFrame');
+
+            // 1. Show Toast Feedback
+            showToast(`Loading R&R for ${roleName}. Press ESC to close.`);
+
+            // 2. Open PDF Viewer
+            iframe.src = pdfPath;
+            modal.style.display = "block";
+        }
+
+        // Function to close the PDF viewer modal
+        function closePDFViewer() {
+            const modal = document.getElementById('pdfModal');
+            const iframe = document.getElementById('pdfFrame');
+            
+            if (modal.style.display === "block") {
+                 // Show feedback toast for closing
+                showToast("PDF Viewer closed.");
+
+                modal.style.display = "none";
+                // Clear the iframe source
+                iframe.src = "";
+            }
+        }
+
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdfModal');
+            if (event.target == modal) {
+                closePDFViewer();
+            }
+        }
+
+        // Keyboard Accessibility: Close the modal using the ESC key
+        document.addEventListener('keydown', function(event) {
+            // Check if the pressed key is the Escape key (key code 27 or 'Escape')
+            if (event.key === "Escape" || event.keyCode === 27) {
+                closePDFViewer();
+            }
+        });
+    </script>
+</body>
+</html>
