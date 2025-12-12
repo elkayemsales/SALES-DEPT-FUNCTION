@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elkayem Sales Dept Function</title>
+    <title>Sales Dept Function</title>
     
     <link rel="icon" type="image/png" href="favicon.png">
     
@@ -192,6 +192,27 @@
             visibility: visible;
             opacity: 1;
         }
+        
+        /* --- Floating Action Button (FAB) Styles --- */
+        #fab-rr {
+            position: fixed; /* Fixed position relative to viewport */
+            top: 20px; /* 20px from the bottom */
+            right: 20px; /* 20px from the right */
+            background-color: #f5cba7; /* Orange background */
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999; /* Below the modal, but above everything else */
+        }
+
+        #fab-rr:hover {
+            background-color: #f5cba7; /* Darker orange on hover */
+        }
     </style>
 </head>
 <body>
@@ -200,7 +221,7 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan="9" class="main-header">ELKAYEM SALES DEPT FUNCTION</th>
+                    <th colspan="9" class="main-header">SALES DEPT FUNCTION</th>
                 </tr>
                 <tr class="subheader">
                     <th class="s-no">S.NO</th>
@@ -264,7 +285,7 @@
                     <td class="s-no">4</td>
                     <td class="role">Loading / Unloading Incharge (U1 & KNL)</td>
                     <td></td>
-                    <td><a href="./LOADING%20UNLOADING/LOADING%20UNLOADING.pdf" class="rr-link" title="Click to view R&R PDF for Loading/Unloading" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td><a href="./Loading%20Unloading/Loading%20Unloading.pdf" class="rr-link" title="Click to view R&R PDF for Loading/Unloading" onclick="openPDFViewer(event)">R&R</a></td>
                     <td>R.Thamotharan(U1)<br>T.Vignesh(U1)</td>
                     <td>2</td>
                     <td>-</td>
@@ -274,7 +295,7 @@
                     <td class="s-no">5</td>
                     <td class="role">Store/ Packing & counting Incharge</td>
                     <td></td>
-                    <td><a href="./STORE%20PACKING/STORE%20PACKING.pdf" class="rr-link" title="Click to view R&R PDF for Store/Packing Incharge" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td><a href="./Store%20packing/Store%20packing.pdf" class="rr-link" title="Click to view R&R PDF for Store/Packing Incharge" onclick="openPDFViewer(event)">R&R</a></td>
                     <td>T.Shanmugam(U1)</td>
                     <td>1</td>
                     <td>-</td>
@@ -284,7 +305,7 @@
                     <td class="s-no">6</td>
                     <td class="role">Store maintenance (Inward & outward) & Stock taking Activity shift supervisor</td>
                     <td></td>
-                    <td><a href="./STORE%20MAINTAIN/STORE%20MAINTAIN.pdf" class="rr-link" title="Click to view R&R PDF for Store Maintenance" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td><a href="./Store%20maintain/Store%20maintain.pdf" class="rr-link" title="Click to view R&R PDF for Store Maintenance" onclick="openPDFViewer(event)">R&R</a></td>
                     <td>T.Ravishankar(U1)<br>T.Sivasakthivel(U1)<br>Manju<br>O.Muniraju(U2)</td>
                     <td>2</td>
                     <td>1</td>
@@ -304,7 +325,7 @@
                     <td class="s-no" rowspan="7">8</td>
                     <td class="role" rowspan="7">Documentation</td>
                     <td>1. Sales KPI & PPT / Data Analysis</td>
-                    <td rowspan="7"><a href="./DOCUMENTATION/DOCUMENTATION.pdf" class="rr-link" title="Click to view R&R PDF for Documentation" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td rowspan="7"><a href="./Documentation/Documentation.pdf" class="rr-link" title="Click to view R&R PDF for Documentation" onclick="openPDFViewer(event)">R&R</a></td>
                     <td rowspan="3">N.Poovizhi(U1)<br>R.Ravichandran(U1)</td>
                     <td rowspan="3">3</td>
                     <td rowspan="3">-</td>
@@ -336,7 +357,7 @@
                     <td class="s-no" rowspan="3">9</td>
                     <td class="role" rowspan="3">AL Group Dispatch</td>
                     <td>1.Dispatch Incharge</td>
-                    <td rowspan="3"><a href="./AL%20DISPATCH/AL%20DISPATCH.pdf" class="rr-link" title="Click to view R&R PDF for AL Dispatch" onclick="openPDFViewer(event)">R&R</a></td>
+                    <td rowspan="3"><a href="./AL%20Dispatch/AL%20Dispatch.pdf" class="rr-link" title="Click to view R&R PDF for AL Dispatch" onclick="openPDFViewer(event)">R&R</a></td>
                     <td rowspan="3">R.Umamageshwari (U1)</td>
                     <td rowspan="3">2</td>
                     <td rowspan="3">-</td>
@@ -381,6 +402,8 @@
             </tbody>
         </table>
     </div>
+
+    <a id="fab-rr" href="https://elkayemsales.github.io/Sales-Roles-Responsibilities/" target="_blank" title="View Main R&R Document">R&R</a>
 
     <div id="pdfModal" class="modal">
         <div class="modal-content">
@@ -431,7 +454,7 @@
             const iframe = document.getElementById('pdfFrame');
             
             if (modal.style.display === "block") {
-                 // Show feedback toast for closing
+                // Show feedback toast for closing
                 showToast("PDF Viewer closed.");
 
                 modal.style.display = "none";
@@ -457,8 +480,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
